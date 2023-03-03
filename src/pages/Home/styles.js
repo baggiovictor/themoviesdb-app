@@ -30,6 +30,7 @@ export const Movie = styled.li`
         margin-top: 2rem;
         font-weight: bold;
         font-size: 120%;
+        text-align: center;
     }
 
     a {

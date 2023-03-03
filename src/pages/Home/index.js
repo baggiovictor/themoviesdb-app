@@ -1,26 +1,17 @@
+import { useEffect, useState } from "react";
 import { Container, MovieList, Movie } from "./styles";
+import { ApiKey } from '../../config/key'
+import { Link } from "react-router-dom";
 
 export function Home() {
-    const movies = [
-        {
-            id: 1,
-            title: "Spider-Man",
-            imageUrl:
-                "https://upload.wikimedia.org/wikipedia/pt/0/00/Spider-Man_No_Way_Home_poster.jpg",
-        },
-        {
-            id: 2,
-            title: "Thor",
-            imageUrl:
-                "https://upload.wikimedia.org/wikipedia/pt/0/00/Spider-Man_No_Way_Home_poster.jpg",
-        },
-        {
-            id: 3,
-            title: "Avengers",
-            imageUrl:
-                "https://upload.wikimedia.org/wikipedia/pt/0/00/Spider-Man_No_Way_Home_poster.jpg",
-        },
-    ];
+    const [movies, setMovies] = useState([]);
+    const image_path = 'https://image.tmdb.org/t/p/w500';
+
+    useEffect(() => {
+        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${ApiKey}&language=en-US&page=1`)
+            .then(response => response.json())
+            .then(data => setMovies(data.results))
+    }, [])
 
     return (
         <Container>
@@ -29,14 +20,14 @@ export function Home() {
                 {movies.map((movie) => {
                     return (
                         <Movie key={movie.id}>
-                            <a href="https://www.themoviedb.org/settings/api">
-                                <img src={movie.imageUrl} alt={movie.title} />
-                            </a>
+                            <Link to={`/details/${movie.id}`}>
+                                <img src={`${image_path}${movie.poster_path}`} alt={movie.title} />
+                            </Link>
                             <span>{movie.title}</span>
                         </Movie>
                     );
                 })}
             </MovieList>
-        </Container>
+        </Container >
     );
 }
